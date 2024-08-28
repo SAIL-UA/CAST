@@ -7,10 +7,19 @@ except ImportError:
     import warnings
     warnings.warn("Importing 'myextension' outside a proper installation.")
     __version__ = "dev"
-
+    
+from .handler import setup_handlers
 
 def _jupyter_labextension_paths():
     return [{
-        "src": "labextension",
-        "dest": "myextension"
+        "src": "labextension",  # Directory containing the built assets
+        "dest": "myextension"   # Name of the JupyterLab extension
     }]
+
+
+def _jupyter_server_extension_points():
+    return [{
+        'module': 'myextension',
+    }]
+def load_jupyter_server_extension(nb_server_app):
+    setup_handlers(nb_server_app.web_app)
